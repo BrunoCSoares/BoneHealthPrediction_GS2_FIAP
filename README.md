@@ -98,3 +98,15 @@ Exemplo de Resposta de Sucesso (JSON):
       }
    }
    ```
+
+## 📽️Vídeo Demonstrativo
+
+_Vídeo em prodção..._
+
+## 👥 Integrantes
+
+Bruno Carlos Soares - RM 559250
+
+Lucas Borges de Souza - RM 560027
+
+Pedro Henrique da Silva - RM 560393
