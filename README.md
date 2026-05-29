@@ -3,39 +3,36 @@
 Este repositório contém o microsserviço de Inteligência Artificial do projeto **BoneGuard**, desenvolvido para a Global Solution da FIAP. A API é responsável por receber imagens de radiografias (raio-x) e aplicar um modelo de Deep Learning para classificar a saúde óssea do paciente.
 
 ## 🎯 Objetivo e Contexto de Negócio
-O BoneGuard atua como uma ferramenta de triagem precoce para médicos e sistemas de saúde. O modelo foi otimizado (através de *Fine-Tuning* e *Class Weights*) para priorizar a sensibilidade na classe inicial da doença. O nosso modelo atinge **97% de taxa de acerto (recall) na detecção de Osteopenia**, garantindo que pacientes em estágio inicial de perda de massa óssea sejam identificados rapidamente para intervenção clínica, minimizando os falsos negativos.
+O BoneGuard atua como uma ferramenta de triagem precoce para médicos e sistemas de saúde. O modelo foi otimizado (através de *Fine-Tuning* e *Class Weights*) para priorizar a sensibilidade na classe inicial da doença. O nosso modelo atinge **97% de taxa de acerto (recall) na detecção de Osteopenia**, garantindo que pacientes em estágio inicial de perda de massa óssea sejam identificados rapidamente para intervenção clínica.
 
-## 🏗️ Arquitetura
-Este projeto atua como um **Microsserviço de IA Isolado**, encapsulado via Docker. Ele não possui interface gráfica própria (frontend) e não comunica diretamente com a base de dados. Foi desenhado segundo as melhores práticas de Arquitetura de Microsserviços para ser consumido via requisições HTTP (`POST`) pelo Backend principal da aplicação (Gateway/API em Java).
+## 🏗️ Arquitetura e Fluxo de Dados
+Abaixo, o diagrama da arquitetura de microsserviços do projeto, destacando a comunicação entre a interface do utilizador, o backend em Java (Gateway) e o nosso motor de IA em Python.
 
-### Tecnologias Utilizadas:
-* **Python 3.12**
-* **TensorFlow / Keras** (Modelo EfficientNetB0 customizado)
-* **FastAPI** (Construção da API RESTful de alta performance)
-* **Uvicorn** (Servidor ASGI)
-* **Docker** (Containerização e padronização de ambiente)
+<div align="center">
+  <img src="graphics/diagrama.jpg" width="800">
+</div>
+
+### Descrição do Fluxo
+1. **Aplicação Cliente:** Envia a radiografia para o Backend principal.
+2. **Backend Gateway (Java):** Orquestra a requisição e encaminha a imagem para o nosso container de IA.
+3. **Microsserviço de IA (Python/FastAPI/TensorFlow):** Processa a inferência e retorna o diagnóstico (classificação e confiança).
+4. **Persistência:** O resultado é armazenado no banco de dados para relatórios analíticos (DataVis).
 
 ## 📊 Desempenho e Validação do Modelo (V2)
 
-Durante o processo de *Quality Assurance* (QA), optámos por sacrificar uma pequena margem de acurácia global para maximizar a assertividade médica. Os gráficos abaixo demonstram o comportamento do modelo.
+A escolha do modelo base (EfficientNetB0) foi pautada pelo equilíbrio entre performance e precisão. Para mitigar a disparidade entre as classes, aplicámos técnicas de balanceamento de pesos, resultando nos indicadores abaixo:
 
-### Evolução do Treino (Overfitting Controlado para Sensibilidade)
-| Acurácia | Perda (Loss) |
-| :---: | :---: |
-| <img src="graphics/grafico_acuracia.png" width="400"> | <img src="graphics/grafico_perda.png" width="400"> |
-*Nota: O distanciamento nas épocas finais reflete a penalização forçada nas classes minoritárias para garantir a elevada taxa de recall em Osteopenia.*
+### Evolução do Treino e Matriz de Confusão
+| Acurácia | Perda (Loss) | Matriz de Confusão |
+| :---: | :---: | :---: |
+| <img src="graphics/grafico_acuracia.png" width="300"> | <img src="graphics/grafico_perda.png" width="300"> | <img src="graphics/grafico_matriz_confusao.png" width="300"> |
 
-### Matriz de Confusão
-Na matriz abaixo, é possível verificar a eficácia do modelo em diagnosticar corretamente a Osteopenia (97% de Recall), concentrando os acertos no quadrante central.
+*Nota: O comportamento das curvas reflete uma penalização forçada nas classes minoritárias para garantir a alta taxa de recall em Osteopenia, priorizando a segurança do paciente.*
 
-<div align="center">
-  <img src="graphics/grafico_matriz_confusao.png" width="500">
-</div>
-
-## ⚙️ Como Executar o Projeto Localmente
+## ⚙️ Como Executar o Projeto
 
 ### Opção 1: Usando Docker (Recomendado)
-A aplicação está totalmente contentorizada para garantir que corre em qualquer ambiente sem problemas de dependências.
+Para garantir a portabilidade, utilize a imagem conteinerizada:
 
 1. Na raiz do projeto, construa a imagem referenciando o ficheiro dentro da pasta `docker/`:
    ```bash
