@@ -1,0 +1,13 @@
+# Ignora a pasta do ambiente virtual
+venv/
+
+# Ignora os arquivos temporários do Python
+__pycache__/
+*.pyc
+
+# Ignora o dataset de imagens (ajuste o nome se a sua pasta de raio-x estiver aqui dentro)
+BoneHealthDataset/
+dataset_ossos/
+
+# Ignora o script de teste local
+avaliar_modelo.py
