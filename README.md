@@ -29,22 +29,31 @@ A escolha do modelo base (EfficientNetB0) foi pautada pelo equilíbrio entre per
 
 *Nota: O comportamento das curvas reflete uma penalização forçada nas classes minoritárias para garantir a alta taxa de recall em Osteopenia, priorizando a segurança do paciente.*
 
+## 🌐 API em Produção
+
+A API está deployada na **Oracle Cloud Infrastructure (OCI)** como Container Instance e pode ser utilizada diretamente:
+
+| | |
+|---|---|
+| **Base URL** | `http://147.15.115.61:8000` |
+| **Swagger UI** | `http://147.15.115.61:8000/docs` |
+
 ## ⚙️ Como Executar o Projeto
 
-### Opção 1: Usando Docker (Recomendado)
-Para garantir a portabilidade, utilize a imagem conteinerizada:
+### Opção 1: Docker Compose (Recomendado)
 
-1. Na raiz do projeto, construa a imagem referenciando o ficheiro dentro da pasta `docker/`:
-   ```bash
-   docker build -f docker/Dockerfile -t boneguard-api .
-   ```
+```bash
+docker compose up --build
+```
 
-2. Corra o contentor mapeando a porta 8000:
-   ```bash
-   docker run -p 8000:8000 boneguard-api
-   ```
+### Opção 2: Docker manual
 
-### Opção 2: Usando Ambiente Virtual Python (VENV)
+```bash
+docker build -f docker/Dockerfile -t boneguard-api .
+docker run -p 8000:8000 boneguard-api
+```
+
+### Opção 3: Usando Ambiente Virtual Python (VENV)
 
 1. Crie e ative o ambiente virtual:
    ```bash
@@ -54,17 +63,16 @@ Para garantir a portabilidade, utilize a imagem conteinerizada:
    source venv/bin/activate      # (No Linux/Mac)
    ```
 
-2. Instale as dependências listadas na pasta docker:
+2. Instale as dependências:
    ```bash
    pip install -r docker/requirements.txt
-   ````
+   ```
 
-3. Mude para a diretoria da API e inicie o servidor:
+3. Inicie o servidor:
    ```bash
    cd api
    uvicorn api:app --reload
    ```
-
 
 ## 📡 Documentação dos Endpoints
 

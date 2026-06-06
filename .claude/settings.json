@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s --max-time 15 http://147.15.115.61:8000/docs)",
+      "Bash(curl -v --max-time 15 http://147.15.115.61:8000/)"
+    ]
+  }
+}

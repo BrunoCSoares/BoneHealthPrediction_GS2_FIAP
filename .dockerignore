@@ -1,0 +1,10 @@
+.git
+.gitignore
+notebook/
+graphics/
+BoneHealthDataset/
+dataset_ossos/
+venv/
+__pycache__/
+*.pyc
+*.md
